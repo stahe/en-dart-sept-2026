@@ -663,60 +663,58 @@
 
 <h1 id="2-setting-up-a-development-environment">2. <span style="color: #2e74b5">Setting Up a Development Environment</span></h1>
 <p><strong>Note</strong>: In the following steps, we’ll use the <a href="https://code.visualstudio.com/"><u><span style="color: #0563c1">VSCode</span></u></a> tool to test the Dart scripts. Open two VSCode windows and use [File / Open Folder] to open the folders for both projects.</p>
-<p>The TypeScript course installs Node.js, an npm project ([package.json]), TypeScript itself and its type checker ([tsc]), a script runner that does not require prior compilation ([tsx]), and finally ESLint. The Dart equivalent of this entire toolchain consists of a single component to install: [SDK Dart]—which can be downloaded from [dart.dev] or, more simply, installed via a system package manager ([choco install dart-sdk] on Windows, [brew install dart] on macOS, or the official APT repository on Linux/Debian/Ubuntu).</p>
-<p>Whereas TypeScript requires three separate tools (the [tsc] compiler to check types, [tsx] to run a script without compiling it first, and ESLint for style analysis), the Dart tool SDK provides all of this in a single command, [dart], which includes the following subcommands: [dart run] (runs a script), [dart analyze] (checks the style—the combined equivalent of [tsc], ET, and ESLint), [dart pub] (manages dependencies, equivalent to [npm]), [dart format] (reformats the code, equivalent to Prettier) and [dart test] (runs the tests).</p>
+<p>The TypeScript course installs Node.js, an npm project ([package.json]), TypeScript itself and its type checker ([tsc]), a script runner that does not require prior compilation ([tsx]), and finally ESLint. The Dart equivalent of this entire toolchain consists of a single component to install: [Dart SDK]—which can be downloaded from [dart.dev] or, more simply, installed via a system package manager ([choco install dart-sdk] on Windows, [brew install dart] on macOS, or the official APT repository on Linux/Debian/Ubuntu).</p>
+<p>Whereas TypeScript requires three separate tools (the [tsc] compiler to check types, [tsx] to run a script without compiling it first, and ESLint for style analysis), the Dart SDK provides all of this in a single command, [dart], which includes the following subcommands: [dart run] (runs a script), [dart analyze] (checks the style—the combined equivalent of [tsc] and ESLint), [dart pub] (manages dependencies, equivalent to [npm]), [dart format] (reformats the code, equivalent to Prettier) and [dart test] (runs the tests).</p>
 <h2 id="21-verifying-installed-tools">2.1. <span style="color: #2e74b5">Verifying Installed Tools</span></h2>
 <p>Once SDK is installed, verify the installation in a terminal using VSCode:</p>
-<div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
-<span class="odt-code-line"><span class="odt-code-line-content">PS C:\Data\st-2026\dev\dart\dart-sept-2026-scripts\dart-fondamentaux&gt; <span style="background-color:#fff5ce">dart --version</span></span></span>
-<span class="odt-code-line"><span class="odt-code-line-content">Dart SDK version: <span style="background-color:#fff5ce">3.12.2</span> (stable) (Tue Jun 9 01:11:39 2026 -0700) on &quot;windows_x64&quot;</span></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>PS C:\Data\st-2026\dev\dart\dart-sept-2026-scripts\dart-fundamentals&gt; dart --version
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Dart SDK version: 3.12.2 (stable) (Tue Jun 9 01:11:39 2026 -0700) on "windows_x64"
 </code></pre></div>
-
-<p>which displays the version of SDK (for example, [Dart SDK version: 3.5.0 (stable)]). Unlike Node.js and TypeScript, which are installed separately (one version of Node, one version of TypeScript), the version number of SDK Dart covers the language, the compiler, and all the tools controlled by [dart]: there is only one version to track.</p>
+<p>which displays the version of SDK (for example, [Dart SDK version: 3.12.2 (stable)]). Unlike Node.js and TypeScript, which are installed separately (one version of Node, one version of TypeScript), the version number of the Dart SDK covers the language, the compiler, and all the tools controlled by [dart]: there is only one version to track.</p>
 <h2 id="22-setting-up-the-vscode-project">2.2. <span style="color: #2e74b5">Setting up the VSCode project</span></h2>
 <p>As with TypeScript, create a project folder and open it in VSCode. Whereas a TypeScript project is declared with two files ([package.json] for dependencies, [tsconfig.json] for compiler options), a Dart project requires only one: [pubspec.yaml].</p>
 <h3 id="221-the-pubspecyaml-file">2.2.1. <span style="color: #1f4d78">The <code>pubspec.yaml</code> file</span></h3>
-<p>[pubspec.yaml] serves both the role of [package.json] (project name, dependencies) and, to a lesser extent, that of [tsconfig.json] (the key [environment: sdk:] sets the range of accepted SDK Dart versions, much like [target]/[lib] define the version of ECMAScript targeted by [tsc]):</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
-<span class="normal"><a href="#__codelineno-0-2">2</a></span>
-<span class="normal"><a href="#__codelineno-0-3">3</a></span>
-<span class="normal"><a href="#__codelineno-0-4">4</a></span>
-<span class="normal"><a href="#__codelineno-0-5">5</a></span>
-<span class="normal"><a href="#__codelineno-0-6">6</a></span>
-<span class="normal"><a href="#__codelineno-0-7">7</a></span>
-<span class="normal"><a href="#__codelineno-0-8">8</a></span>
-<span class="normal"><a href="#__codelineno-0-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dart_fondamentaux</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Scripts du cours "Introduction au langage Dart par l'exemple"</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="nt">publish_to</span><span class="p">:</span><span class="w"> </span><span class="s">'none'</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="err">  </span><span class="nt">sdk</span><span class="p">:</span><span class="w"> </span><span class="s">'&gt;=3.3.0</span><span class="nv"> </span><span class="s">&lt;4.0.0'</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nt">dependencies</span><span class="p">:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="err">  </span><span class="nt">http</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^1.2.0</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="err">  </span><span class="nt">dio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^5.4.0</span>
-</code></pre></div></td></tr></table></div>
-<p>Unlike YAML, which is derived from [package.json] (in the format of JSON), [pubspec.yaml] is, strictly speaking, a YAML file—indentation is significant in it, just as it is in Python.</p>
-<p>Once this file is written, the command [dart pub get] (equivalent to [npm install]) downloads the declared dependencies and generates a [pubspec.lock] file (equivalent to [package-lock.json]), which locks in the exact versions to be installed.</p>
-<h2 id="23-first-script">2.3. <span style="color: #2e74b5">First script</span></h2>
-<p>A minimal Dart script, [bonjour.dart]:</p>
+<p>[pubspec.yaml] serves both the role of [package.json] (project name, dependencies) and, to a lesser extent, that of [tsconfig.json] (the key [environment: sdk:] sets the range of accepted Dart SDK versions, much like [target]/[lib] define the version of ECMAScript targeted by [tsc]):</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
-<span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="n">print</span><span class="p">(</span><span class="s1">'Bonjour Dart !'</span><span class="p">);</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="p">}</span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">8</a></span>
+<span class="normal"><a href="#__codelineno-1-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dart_fundamentals</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Scripts of the course "Introduction to the Dart language by example"</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="nt">publish_to</span><span class="p">:</span><span class="w"> </span><span class="s">'none'</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="nt">sdk</span><span class="p">:</span><span class="w"> </span><span class="s">'&gt;=3.3.0</span><span class="nv"> </span><span class="s">&lt;4.0.0'</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="nt">dependencies</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="nt">http</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^1.2.0</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">  </span><span class="nt">dio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^5.4.0</span>
+</code></pre></div></td></tr></table></div>
+<p>Unlike [package.json] (in JSON format), [pubspec.yaml] is, strictly speaking, a YAML file—indentation is significant in it, just as it is in Python.</p>
+<p>Once this file is written, the command [dart pub get] (equivalent to [npm install]) downloads the declared dependencies and generates a [pubspec.lock] file (equivalent to [package-lock.json]), which locks in the exact versions to be installed.</p>
+<h2 id="23-first-script">2.3. <span style="color: #2e74b5">First script</span></h2>
+<p>A minimal Dart script, [hello.dart]:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kt">void</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="n">print</span><span class="p">(</span><span class="s1">'Hello Dart!'</span><span class="p">);</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
 <p>is run with:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>dart run bonjour.dart
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>dart run hello.dart
 </code></pre></div></td></tr></table></div>
-<p>Two immediate differences from the first script, TypeScript, in the course: the function [main] is here OBLIGATOIRE (an executable Dart script must define a function named [main] at the file level—unlike TypeScript/[tsx], where the top-level code in the file runs directly, without requiring a function to be defined); and [dart run] compiles and executes the script in a single step, without a visible separate transpilation step (like [tsx], but without the need to install any additional tools: [dart run] is part of SDK itself).</p>
+<p>Two immediate differences from the first script, TypeScript, in the course: the function [main] is here MANDATORY (an executable Dart script must define a function named [main] at the file level—unlike TypeScript/[tsx], where the top-level code in the file runs directly, without requiring a function to be defined); and [dart run] compiles and executes the script in a single step, without a visible separate transpilation step (like [tsx], but without the need to install any additional tools: [dart run] is part of SDK itself).</p>
 <h2 id="24-second-script-static-analysis">2.4. <span style="color: #2e74b5">Second script: static analysis</span></h2>
 <p>Whereas the TypeScript course distinguishes between a “type checking” step ([tsc --noEmit]) and a separate ESLint step, Dart merges the two into a single command:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>dart analyze
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>dart analyze
 </code></pre></div></td></tr></table></div>
 <p>When run without arguments from the root of a project containing a [pubspec.yaml] file, it analyzes all [.dart] files in the project: it flags both type errors (the equivalent of [tsc]) and style issues covered by the enabled lint rules (the equivalent of ESLint)—see the following section for information on enabling these rules.</p>
 <h2 id="25-the-linter">2.5. <span style="color: #2e74b5">The linter</span></h2>
-<p>ESLint is an external tool that must be installed and configured separately (file [eslint.config.js], selecting a preset, etc.). Dart integrates its own linter directly into [dart analyze]: simply add the official [package:lints] package to the [dev_dependencies] and [pubspec.yaml] packages, then create a [analysis_options.yaml] file at the root of the project:</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">package:lints/recommended.yaml</span>
+<p>ESLint is an external tool that must be installed and configured separately (file [eslint.config.js], selecting a preset, etc.). Dart integrates its own linter directly into [dart analyze]: simply add the official [package:lints] package to the [dev_dependencies] of [pubspec.yaml], then create a [analysis_options.yaml] file at the root of the project:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">package:lints/recommended.yaml</span>
 </code></pre></div></td></tr></table></div>
 <p>This single file serves the same purpose as [eslint.config.js] for the TypeScript course: it activates a set of rules recommended by the Dart team (unused variables, suspicious comparisons, preference for [const], etc.), which [dart analyze] then applies automatically.</p>
 <h2 id="26-vscode-dart-extension">2.6. <span style="color: #2e74b5">VSCode Dart Extension</span></h2>
